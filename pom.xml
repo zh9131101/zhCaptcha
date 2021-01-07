@@ -8,6 +8,7 @@
     <artifactId>zh-captcha</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <packaging>jar</packaging>
     <name>zhCaptcha</name>
     <description>Java web graphics verification code</description>
     <url>https://github.com/zh9131101/zhCaptcha</url>
