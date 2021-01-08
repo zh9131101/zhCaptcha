@@ -20,7 +20,9 @@ import com.github.zh9131101.textimage.AbstractCaptcha;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 
 /**
  * <p>
@@ -149,4 +151,14 @@ public class CaptchaUtils {
         request.getSession().removeAttribute(CaptchaConst.SESSION_KEY);
     }
 
+    /**
+     * 输出base64编码
+     *
+     * @param outputStream 字节数组输出流
+     * @return base64编码字符串
+     */
+    public String toBase64(ByteArrayOutputStream outputStream) {
+        String type = "data:image/png;base64,";
+        return type + Base64.getEncoder().encodeToString(outputStream.toByteArray());
+    }
 }
