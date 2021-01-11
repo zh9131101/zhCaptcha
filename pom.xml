@@ -6,7 +6,7 @@
 
     <groupId>com.github.zh9131101</groupId>
     <artifactId>zh-captcha</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <packaging>jar</packaging>
     <name>zhCaptcha</name>
@@ -26,6 +26,7 @@
             <organization>zh9131101</organization>
         </developer>
     </developers>
+    <!-- 与申请issue时填写的SCM保持一致 -->
     <scm>
         <connection>scm:git@github.com:zh9131101/zhCaptcha.git</connection>
         <developerConnection>scm:git@github.com:zh9131101/zhCaptcha.git</developerConnection>
@@ -46,9 +47,6 @@
         <maven.test.skip>true</maven.test.skip>
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <java.version>1.8</java.version>
-
-        <fastjson.version>1.2.62</fastjson.version>
-        <gson.version>2.8.6</gson.version>
     </properties>
     <dependencies>
         <dependency>
@@ -78,9 +76,10 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.1.0</version>
+                        <version>2.2.1</version>
                         <executions>
                             <execution>
+                                <id>attach-sources</id>
                                 <phase>package</phase>
                                 <goals>
                                     <goal>jar-no-fork</goal>
@@ -92,16 +91,19 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.1.1</version>
+                        <version>2.9.1</version>
                         <configuration>
                             <show>private</show>
                             <nohelp>true</nohelp>
                             <charset>UTF-8</charset>
                             <encoding>UTF-8</encoding>
                             <docencoding>UTF-8</docencoding>
+                            <!-- java8版本导致javadoc打包编译失败时候，添加-->
+                            <additionalparam>-Xdoclint:none</additionalparam>
                         </configuration>
                         <executions>
                             <execution>
+                                <id>attach-javadocs</id>
                                 <phase>package</phase>
                                 <goals>
                                     <goal>jar</goal>
@@ -109,13 +111,14 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!-- GPG -->
+                    <!-- GPG 签名组件 -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <version>1.5</version>
                         <executions>
                             <execution>
+                                <id>sign-artifacts</id>
                                 <phase>verify</phase>
                                 <goals>
                                     <goal>sign</goal>
@@ -137,19 +140,58 @@
                             <showWarnings>false</showWarnings>
                         </configuration>
                     </plugin>
+                    <!-- Maven 发布插件执行发布部署 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <version>2.5.3</version>
+                        <configuration>
+                            <autoVersionSubmodules>true</autoVersionSubmodules>
+                            <useReleaseProfile>false</useReleaseProfile>
+                            <releaseProfiles>release</releaseProfiles>
+                            <goals>deploy</goals>
+                        </configuration>
+                    </plugin>
+                    <!-- sonatype -->
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.7</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <!-- 手动将部署释放到中央存储库mvn nexus-staging:release -->
+                            <goal>deploy nexus-staging:release</goal>
+                            <!-- serverId 要与Apache Maven里setting.xml文件中的server下的id对应 -->
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
             <distributionManagement>
                 <snapshotRepository>
-                    <id>sonatype-nexus-snapshots</id>
+                    <id>ossrh</id>
                     <name>Sonatype Nexus Snapshots</name>
                     <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
                 </snapshotRepository>
                 <repository>
-                    <id>sonatype-nexus-staging</id>
+                    <id>ossrh</id>
                     <name>Nexus Release Repository</name>
                     <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
                 </repository>
+                <!--
+                修改 $MAVEN_HOME/conf/settings.xml 文件(即你的Maven配置文件)
+
+               <server>
+                    这里的ID要和distributionManagement.repository.id一致
+                    <id>ossrh</id>
+                    https://issues.sonatype.org/的账号
+                    <username>账号</username>
+                    https://issues.sonatype.org/的密码
+                    <password>密码</password>
+                </server>
+                -->
             </distributionManagement>
         </profile>
     </profiles>
