@@ -6,7 +6,7 @@
 
     <groupId>com.github.zh9131101</groupId>
     <artifactId>zh-captcha</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <packaging>jar</packaging>
     <name>zhCaptcha</name>
@@ -50,7 +50,7 @@
     <scm>
         <connection>scm:git@github.com:zh9131101/zhCaptcha.git</connection>
         <developerConnection>scm:git@github.com:zh9131101/zhCaptcha.git</developerConnection>
-        <url>https://github.com/zh9131101/zhCaptcha/tree/${project.scm.tag}</url>
+        <url>https://github.com/zh9131101/zhCaptcha/tree/master</url>
         <tag>master</tag>
     </scm>
 
@@ -194,6 +194,18 @@
                             <verbose>true</verbose>
                             <encoding>UTF-8</encoding>
                             <showWarnings>false</showWarnings>
+                        </configuration>
+                    </plugin>
+                    <!-- Maven 多模块项目统一修改版本号：
+                    为顶级 module 设置新版本：mvn versions:set -DnewVersion=1.0.1-SNATHOST
+                    更新所有子 module 的版本：mvn versions:update-child-modules
+                    -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>versions-maven-plugin</artifactId>
+                        <version>2.7</version>
+                        <configuration>
+                            <generateBackupPoms>false</generateBackupPoms>
                         </configuration>
                     </plugin>
                     <!-- Maven 发布插件执行发布部署 -->
