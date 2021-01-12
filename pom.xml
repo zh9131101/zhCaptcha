@@ -253,7 +253,16 @@
 
                <server>
                     这里的ID要和distributionManagement.repository.id一致
-                    <id>ossrh</id>
+                    <id>sonatype-nexus-snapshots</id>
+                    https://issues.sonatype.org/的账号
+                    <username>账号</username>
+                    https://issues.sonatype.org/的密码
+                    <password>密码</password>
+                </server>
+
+                <server>
+                    这里的ID要和distributionManagement.repository.id一致
+                    <id>sonatype-nexus-staging</id>
                     https://issues.sonatype.org/的账号
                     <username>账号</username>
                     https://issues.sonatype.org/的密码
