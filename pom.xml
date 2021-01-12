@@ -50,7 +50,8 @@
     <scm>
         <connection>scm:git@github.com:zh9131101/zhCaptcha.git</connection>
         <developerConnection>scm:git@github.com:zh9131101/zhCaptcha.git</developerConnection>
-        <url>https://github.com/zh9131101/zhCaptcha</url>
+        <url>https://github.com/zh9131101/zhCaptcha/tree/${project.scm.tag}</url>
+        <tag>master</tag>
     </scm>
 
     <repositories>
@@ -76,8 +77,10 @@
         </dependency>
     </dependencies>
 
+    <!-- 发布命令：mvn clean deploy -Dmaven.javadoc.skip=false -P sonatype-oss-release -Darguments="gpg.passphrase=zh9131101" -->
     <profiles>
         <profile>
+            <!-- mvn命令带参数-P sonatype-oss-release指定profile文件 -->
             <id>sonatype-oss-release</id>
             <build>
                 <resources>
@@ -117,8 +120,11 @@
                             <charset>UTF-8</charset>
                             <encoding>UTF-8</encoding>
                             <docencoding>UTF-8</docencoding>
+                            <skip>false</skip>
                             <!-- java8版本导致javadoc打包编译失败时候，添加 -->
                             <additionalparam>-Xdoclint:none</additionalparam>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <reportOutputDirectory>${project.reporting.outputDirectory}</reportOutputDirectory>
                         </configuration>
                         <executions>
                             <execution>
@@ -149,6 +155,27 @@
                                 </plugin>
                             </reportPlugins>
                         </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
+                        <version>1.2</version>
+                        <executions>
+                            <execution>
+                                <id>enforce-maven</id>
+                                <goals>
+                                    <goal>enforce</goal>
+                                </goals>
+                                <configuration>
+                                    <rules>
+                                        <requireMavenVersion>
+                                            <version>(,2.1.0),(2.1.0,2.2.0),(2.2.0,)</version>
+                                            <message>Maven 2.1.0 and 2.2.0 produce incorrect GPG signatures and checksums respectively.</message>
+                                        </requireMavenVersion>
+                                    </rules>
+                                </configuration>
+                            </execution>
+                        </executions>
                     </plugin>
                     <!-- GPG 签名组件 -->
                     <plugin>
@@ -189,6 +216,8 @@
                             <useReleaseProfile>false</useReleaseProfile>
                             <releaseProfiles>release</releaseProfiles>
                             <goals>deploy</goals>
+                            <mavenExecutorId>forked-path</mavenExecutorId>
+                            <arguments>${arguments} -Psonatype-oss-release</arguments>
                         </configuration>
                     </plugin>
                     <!-- sonatype -->
@@ -201,7 +230,7 @@
                             <!-- 手动将部署释放到中央存储库mvn nexus-staging:release -->
                             <goal>deploy nexus-staging:release</goal>
                             <!-- serverId 要与Apache Maven里setting.xml文件中的server下的id对应 -->
-                            <serverId>ossrh</serverId>
+                            <serverId>sonatype-nexus-snapshots</serverId>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
                         </configuration>
@@ -234,45 +263,5 @@
             </distributionManagement>
         </profile>
     </profiles>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>1.2</version>
-                <executions>
-                    <execution>
-                        <id>enforce-maven</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <requireMavenVersion>
-                                    <version>(,2.1.0),(2.1.0,2.2.0),(2.2.0,)</version>
-                                    <message>Maven 2.1.0 and 2.2.0 produce incorrect GPG signatures and checksums respectively.</message>
-                                </requireMavenVersion>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.5.3</version>
-                    <configuration>
-                        <mavenExecutorId>forked-path</mavenExecutorId>
-                        <useReleaseProfile>false</useReleaseProfile>
-                        <arguments>${arguments} -Psonatype-oss-release</arguments>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 
 </project>
