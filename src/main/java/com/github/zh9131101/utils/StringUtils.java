@@ -707,20 +707,6 @@ public class StringUtils {
         return true;
     }
 
-    // Empty checks
-    //-----------------------------------------------------------------------
-    /**
-     * 检查CharSequence是否为空（“”）或null。
-     *
-     * 注意：此方法在Lang版本2.0中已更改。 它不再修剪CharSequence。 该功能在isBlank（）中可用。
-     *
-     * @param cs  要检查的CharSequence，可以为null
-     * @return  如果CharSequence为空或null，则返回true
-     */
-    public static boolean isEmpty(CharSequence cs) {
-        return cs == null || cs.length() == 0;
-    }
-
     /**
      * 检查CharSequence是否包含大小写混合的大小写。
      * null将返回false 。 空的CharSequence（ length()=0 ）将返回false 。
