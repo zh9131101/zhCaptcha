@@ -17,6 +17,8 @@ package com.github.zh9131101.utils;
 
 import com.github.zh9131101.constant.CaptchaConst;
 import com.github.zh9131101.textimage.AbstractCaptcha;
+import com.github.zh9131101.textimage.ICaptchaFactory;
+import com.github.zh9131101.textimage.TextImageCaptchaFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,6 +42,12 @@ public class CaptchaUtils {
     private CaptchaUtils() {
     }
 
+    private static final ICaptchaFactory TEXT_IMAGE_CAPTCHA_FACTORY;
+
+    static {
+        TEXT_IMAGE_CAPTCHA_FACTORY = TextImageCaptchaFactory.getInstance();
+    }
+
     /* ----->>>模版相关<<<------*/
 
     /**
@@ -50,7 +58,7 @@ public class CaptchaUtils {
      * @throws IOException IO异常
      */
     public static void rendererPng(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        AbstractCaptcha captcha = CaptchaConst.TEXT_IMAGE_FACTORY.createCaptcha();
+        AbstractCaptcha captcha = TEXT_IMAGE_CAPTCHA_FACTORY.createCaptcha();
         captcha.setRandomText(CaptchaConst.NUM_EN_MIX);
         sesseionCache(captcha.generateCaptcha(), request);
         rendererPngCaptcha(captcha, response);
@@ -64,7 +72,7 @@ public class CaptchaUtils {
      * @throws IOException IO异常
      */
     public static void rendererGif(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        AbstractCaptcha captcha = CaptchaConst.TEXT_IMAGE_FACTORY.createCaptcha();
+        AbstractCaptcha captcha = TEXT_IMAGE_CAPTCHA_FACTORY.createCaptcha();
         captcha.setRandomText(CaptchaConst.NUM_EN_MIX);
         sesseionCache(captcha.generateCaptcha(), request);
         rendererGifCaptcha(captcha, response);
@@ -153,12 +161,13 @@ public class CaptchaUtils {
 
     /**
      * 输出base64编码
+     * 参考：https://www.cnblogs.com/OpenCoder/p/7127256.html
      *
      * @param outputStream 字节数组输出流
+     * @param type 编码头
      * @return base64编码字符串
      */
-    public String toBase64(ByteArrayOutputStream outputStream) {
-        String type = "data:image/png;base64,";
+    public static String toBase64(ByteArrayOutputStream outputStream, String type) {
         return type + Base64.getEncoder().encodeToString(outputStream.toByteArray());
     }
 }
