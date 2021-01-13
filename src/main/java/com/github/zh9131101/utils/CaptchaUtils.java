@@ -90,7 +90,7 @@ public class CaptchaUtils {
     public static void rendererPngCaptcha(AbstractCaptcha captcha, HttpServletResponse response) throws IOException {
         // 设置请求头为输出图片类型
         setResponseHeader(response);
-        RendererUtils.rendererPng(response.getOutputStream(), captcha);
+        RendererUtils.renderer(CaptchaConst.PNG, response.getOutputStream(), captcha);
     }
 
     /**
@@ -103,7 +103,7 @@ public class CaptchaUtils {
     public static void rendererGifCaptcha(AbstractCaptcha captcha, HttpServletResponse response) throws IOException {
         // 设置请求头为输出图片类型
         setResponseHeader(response);
-        RendererUtils.rendererGif(response.getOutputStream(), captcha);
+        RendererUtils.renderer(CaptchaConst.GIF, response.getOutputStream(), captcha);
     }
 
     /**
@@ -164,7 +164,7 @@ public class CaptchaUtils {
      * 参考：https://www.cnblogs.com/OpenCoder/p/7127256.html
      *
      * @param outputStream 字节数组输出流
-     * @param type 编码头
+     * @param type         编码头
      * @return base64编码字符串
      */
     public static String toBase64(ByteArrayOutputStream outputStream, String type) {

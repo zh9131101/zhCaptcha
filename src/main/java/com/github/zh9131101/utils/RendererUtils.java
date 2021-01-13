@@ -43,16 +43,37 @@ public class RendererUtils {
     private RendererUtils() {
     }
 
-    private static final String PNG = "png";
-
     /**
-     * 渲染2D验证码
+     * 渲染验证码
      *
-     * @param out     输出流
+     * @param formatType     图片格式（后缀）
+     * @param os      输出流
      * @param captcha 验证码
      * @return true or false
      */
-    public static boolean rendererPng(OutputStream out, AbstractCaptcha captcha) {
+    public static boolean renderer(String formatType, OutputStream os, AbstractCaptcha captcha) {
+        if (StringUtils.isEmpty(formatType)) {
+            formatType = CaptchaConst.PNG;
+        }
+        boolean success;
+        if (CaptchaConst.GIF.equals(formatType)) {
+            success = rendererGif(os, captcha);
+        } else {
+            success = rendererImage(formatType, os, captcha);
+        }
+        return success;
+    }
+
+
+    /**
+     * 渲染图片验证码
+     *
+     * @param formatType     图片格式（后缀）
+     * @param os      输出流
+     * @param captcha 验证码
+     * @return true or false
+     */
+    private static boolean rendererImage(String formatType, OutputStream os, AbstractCaptcha captcha) {
         try {
             checkCaptcha(captcha);
             // 验证码图片宽度
@@ -92,14 +113,14 @@ public class RendererUtils {
                 g2d.drawString(String.valueOf(captchaChars[i]), i * fW + fSp + 3, fY - 3);
             }
             g2d.dispose();
-            ImageIO.write(bi, PNG, out);
-            out.flush();
+            ImageIO.write(bi, formatType, os);
+            os.flush();
             return true;
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
-                out.close();
+                os.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -108,13 +129,13 @@ public class RendererUtils {
     }
 
     /**
-     * 渲染GIF验证码
+     * 渲染GIF图片验证码
      *
      * @param os      输出流
      * @param captcha 验证码
      * @return true or false
      */
-    public static boolean rendererGif(OutputStream os, AbstractCaptcha captcha) {
+    private static boolean rendererGif(OutputStream os, AbstractCaptcha captcha) {
         try {
             checkCaptcha(captcha);
             // 验证码图片宽度
@@ -229,7 +250,7 @@ public class RendererUtils {
      *
      * @param captcha 验证码抽象类
      */
-    private static void checkCaptcha(AbstractCaptcha captcha){
+    private static void checkCaptcha(AbstractCaptcha captcha) {
         if (StringUtils.isEmpty(captcha.getCaptcha()) || StringUtils.isEmpty(captcha.getCaptchaChars())) {
             captcha.generateCaptcha();
         }
@@ -240,7 +261,7 @@ public class RendererUtils {
      *
      * @param captcha 验证码抽象类
      */
-    private static void checkFont(AbstractCaptcha captcha){
+    private static void checkFont(AbstractCaptcha captcha) {
         Font font = captcha.getFont();
         if (font == null) {
             font = RendererUtils.createFont(captcha.getFontPath(), captcha.getFontStyle(), captcha.getFontSize(), captcha.getFontName());
@@ -313,13 +334,12 @@ public class RendererUtils {
      * @param color 颜色
      * @param g     Graphics2D
      */
-    private static void drawObstructPoint(Integer width, Integer height, int num, Color color, Graphics2D g)
-    {  // 随机产生干扰点
-        for (int i=0;i<num;i++) {
+    private static void drawObstructPoint(Integer width, Integer height, int num, Color color, Graphics2D g) {  // 随机产生干扰点
+        for (int i = 0; i < num; i++) {
             int x = RandomUtils.randomNumber(width);
             int y = RandomUtils.randomNumber(height);
             g.setColor(color == null ? color() : color);
-            g.drawOval(x,y,RandomUtils.randomNumber(3),RandomUtils.randomNumber(3));
+            g.drawOval(x, y, RandomUtils.randomNumber(3), RandomUtils.randomNumber(3));
         }
     }
 
