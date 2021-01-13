@@ -31,7 +31,7 @@ public class CaptchaConst {
     }
 
     /**
-     *  base64编码的HTML代码
+     * base64编码的HTML代码
      */
     public static final String HTML_TYPE = "data:text/html;base64,";
 
@@ -69,6 +69,13 @@ public class CaptchaConst {
      * 缓存的SESSION_KEY
      */
     public static final String SESSION_KEY = "zhCaptcha";
+
+    /**
+     * 图片格式
+     */
+    public static final String JPG = "jpg";
+    public static final String PNG = "png";
+    public static final String GIF = "gif";
 
     /**
      * 0～9阿拉伯数字
