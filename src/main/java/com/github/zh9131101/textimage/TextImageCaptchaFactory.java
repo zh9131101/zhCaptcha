@@ -28,8 +28,24 @@ package com.github.zh9131101.textimage;
 
 public class TextImageCaptchaFactory implements ICaptchaFactory {
 
+    private TextImageCaptchaFactory() {
+    }
+
     @Override
     public AbstractCaptcha createCaptcha() {
         return new TextImageCaptcha();
+    }
+
+    /**
+     * 获取TextImageCaptchaFactory实例
+     *
+     * @return TextImageCaptchaFactory
+     */
+    public static TextImageCaptchaFactory getInstance() {
+        return SingletonInstance.INSTANCE;
+    }
+
+    private static class SingletonInstance {
+        private static final TextImageCaptchaFactory INSTANCE = new TextImageCaptchaFactory();
     }
 }

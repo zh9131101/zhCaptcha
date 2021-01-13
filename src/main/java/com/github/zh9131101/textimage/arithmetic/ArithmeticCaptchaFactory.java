@@ -30,8 +30,25 @@ import com.github.zh9131101.textimage.ICaptchaFactory;
  */
 
 public class ArithmeticCaptchaFactory implements ICaptchaFactory {
+
+    private ArithmeticCaptchaFactory() {
+    }
+
     @Override
     public AbstractCaptcha createCaptcha() {
         return new ArithmeticCaptcha();
+    }
+
+    /**
+     * 获取ArithmeticCaptchaFactory实例
+     *
+     * @return ArithmeticCaptchaFactory
+     */
+    public static ArithmeticCaptchaFactory getInstance() {
+        return SingletonInstance.INSTANCE;
+    }
+
+    private static class SingletonInstance {
+        private static final ArithmeticCaptchaFactory INSTANCE = new ArithmeticCaptchaFactory();
     }
 }
