@@ -15,10 +15,6 @@
  */
 package com.github.zh9131101.constant;
 
-import com.github.zh9131101.textimage.ICaptchaFactory;
-import com.github.zh9131101.textimage.TextImageCaptchaFactory;
-import com.github.zh9131101.textimage.arithmetic.ArithmeticCaptchaFactory;
-
 /**
  * <p>
  * 验证码 常量类
@@ -35,19 +31,44 @@ public class CaptchaConst {
     }
 
     /**
+     *  base64编码的HTML代码
+     */
+    public static final String HTML_TYPE = "data:text/html;base64,";
+
+    /**
+     * base64编码的CSS代码
+     */
+    public static final String CSS_TYPE = "data:text/css;base64,";
+
+    /**
+     * base64编码的Javascript代码
+     */
+    public static final String JS_TYPE = "data:text/javascript;base64,";
+
+    /**
+     * base64编码的gif图片数据
+     */
+    public static final String GIF_TYPE = "data:image/gif;base64,";
+
+    /**
+     * base64编码的png图片数据
+     */
+    public static final String PNG_TYPE = "data:image/png;base64,";
+
+    /**
+     * base64编码的jpeg图片数据
+     */
+    public static final String JPEG_TYPE = "data:image/jpeg;base64,";
+
+    /**
+     * base64编码的icon图片数据
+     */
+    public static final String ICON_TYPE = "data:image/x-icon;base64,";
+
+    /**
      * 缓存的SESSION_KEY
      */
     public static final String SESSION_KEY = "zhCaptcha";
-
-    /**
-     * 数字验证码工厂
-     */
-    public static final ICaptchaFactory TEXT_IMAGE_FACTORY = new TextImageCaptchaFactory();
-
-    /**
-     * 算术验证码工厂
-     */
-    public static final ICaptchaFactory ARITHMETIC_FACTORY = new ArithmeticCaptchaFactory();
 
     /**
      * 0～9阿拉伯数字
