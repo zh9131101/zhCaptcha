@@ -77,7 +77,7 @@ public abstract class AbstractCaptcha {
     protected Integer fontStyle = Font.PLAIN;
 
     /**
-     * 字体大小：默认32
+     * 字体大小：默认28
      */
     protected Integer fontSize = 28;
 
@@ -92,22 +92,22 @@ public abstract class AbstractCaptcha {
     protected String captcha;
 
     /**
-     * 干扰直线数量：默认1
+     * 干扰直线数量：默认2
      */
     protected Integer obstructLineCount = 2;
 
     /**
-     * 干扰圆数量：默认3
+     * 干扰圆数量：默认2
      */
     protected Integer obstructOvalCount = 2;
 
     /**
-     * 干扰点数量：默认1
+     * 干扰点数量：默认20
      */
     protected Integer obstructPointCount = 20;
 
     /**
-     * 干扰线（贝塞尔曲线）数量：默认3
+     * 干扰线（贝塞尔曲线）数量：默认2
      */
     protected Integer bezierCurvesCount = 2;
 
