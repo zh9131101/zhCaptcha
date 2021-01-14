@@ -351,7 +351,7 @@ RendererUtils.rendererPng(outputStream, TextImageCaptchaFactory.getInstance().cr
     // 登录
     $.post('/login', {
         key: cacheKey,
-        code: '8u6h',
+        code: 'z8h6',
         username: 'admin'，
         password: 'admin'
     }, function(res) {
