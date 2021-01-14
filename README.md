@@ -288,7 +288,7 @@ public class CaptchaController {
 }
 ```
 
-### 5.输出到文件
+### 5.验证码输出到文件
 
 ```
 FileOutputStream outputStream = new FileOutputStream(new File("D:\\captcha.png"));
@@ -333,23 +333,25 @@ RendererUtils.rendererPng(outputStream, TextImageCaptchaFactory.getInstance().cr
 
 
 
-前端使用ajax获取验证码：
+前端使用ajax获取验证码（redis存储验证码）：
 
 ```html
 <img id="cimg" width="130px" height="48px"/>
+```
 
+```script
 <script>
-    var verKey;
+    var cacheKey;
     // 获取验证码
     $.get('/captcha', function(res) {
-        verKey = res.key;
+        cacheKey = res.key;
         $('#cimg').attr('src', res.image);
     },'json');
     
     // 登录
     $.post('/login', {
-        cacheKey: cacheKey,
-        verCode: '8u6h',
+        key: cacheKey,
+        code: '8u6h',
         username: 'admin'，
         password: 'admin'
     }, function(res) {
@@ -357,8 +359,6 @@ RendererUtils.rendererPng(outputStream, TextImageCaptchaFactory.getInstance().cr
     }, 'json');
 </script>
 ```
-
-
 
 ---
 
