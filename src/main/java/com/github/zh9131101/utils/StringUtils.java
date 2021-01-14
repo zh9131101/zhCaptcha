@@ -1519,8 +1519,8 @@ public class StringUtils {
      * @see #hasLength(String)
      * @see #hasText(String)
      */
-    public static boolean isEmpty(Object str) {
-        return (str == null || "".equals(str));
+    public static boolean isEmpty(CharSequence str) {
+        return (str == null || str.length() == 0 || EMPTY.equals(str.toString()));
     }
 
     /**
