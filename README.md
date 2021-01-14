@@ -20,7 +20,7 @@
 
 ![验证码](https://s3.ax1x.com/2021/01/12/sYRgMj.png)	![验证码](https://s3.ax1x.com/2021/01/12/sYRhd0.gif)
 
-&emsp;
+&emsp;&emsp;
 
 **中文类型：**
 
