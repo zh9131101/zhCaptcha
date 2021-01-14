@@ -257,7 +257,7 @@ public class CaptchaController {
         textImageCaptcha.setHeight(96);
         // 设置字体大小
         textImageCaptcha.setFontSize(56);
-        // 设置内置字体名
+        // 设置字体名（内置三种字体actionj.ttf、cash_currency.ttf、microsoft_yahei.ttf，默认微软雅黑）
         textImageCaptcha.setFontName("actionj.ttf");
         // 设置字体样式：斜体……
         textImageCaptcha.setFontStyle(Font.ITALIC);
