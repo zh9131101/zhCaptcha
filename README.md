@@ -1,6 +1,6 @@
 # zhCaptcha
 
-![MavenCentral](https://img.shields.io/maven-central/v/com.github.zh9131101/zh-captcha?style=flat-square)![Hex.pm](https://img.shields.io/hexpm/l/plug.svg?style=flat-square)
+![MavenCentral](https://img.shields.io/maven-central/v/com.github.zh9131101/zh-captcha?style=flat-square) &emsp;![Hex.pm](https://img.shields.io/hexpm/l/plug.svg?style=flat-square)
 
 
 ## 1.简介
