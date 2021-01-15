@@ -52,7 +52,7 @@
 
 ### 3.2.jar包引入
 
-[zh-captcha-x.x.x.jar](https://github.com/zh9131101/zhCaptcha/tree/master)
+[zh-captcha-x.x.x.jar](https://github.com/zh9131101/zhCaptcha/releases)
 
 maven导入jar包，在项目根目录创建`libs`文件夹，然后pom.xml添加如下：
 
