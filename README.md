@@ -324,7 +324,7 @@ RendererUtils.rendererPng(outputStream, TextImageCaptchaFactory.getInstance().cr
 
 
 
-## 7.前端html代码
+## 7.简单案列
 
 ### 7.1.普通的使用
 
@@ -337,7 +337,7 @@ RendererUtils.rendererPng(outputStream, TextImageCaptchaFactory.getInstance().cr
 
 ### 7.2.toBase64的使用
 
-控制类代码
+控制类
 ```java
 @RestController
 @RequestMapping("captcha")
