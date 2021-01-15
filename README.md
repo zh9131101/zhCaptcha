@@ -137,7 +137,6 @@ public class CaptchaController {
 }
 ```
 
-
 ### 4.2.验证码校验
 
 ```java
@@ -289,7 +288,9 @@ public class CaptchaController {
 }
 ```
 
-### 5.验证码输出到文件
+---
+
+## 5.验证码输出到文件
 
 ```
 FileOutputStream outputStream = new FileOutputStream(new File("D:\\captcha.png"));
@@ -322,7 +323,7 @@ RendererUtils.rendererPng(outputStream, TextImageCaptchaFactory.getInstance().cr
 
 &emsp;5、验证通过，清除验证码（重要）
 
-
+---
 
 ## 7.简单案列
 
@@ -401,21 +402,6 @@ public class CaptchaController {
         ReplyUtils replyUtils = ReplyUtils.success("验证码获取成功",base64);
         replyUtils.put("key", uuid);
         return replyUtils;
-    }
-
-    /**
-     * 校验验证码
-     *
-     * @param code 验证码
-     * @return ReplyUtils
-     */
-    @GetMapping("/verify")
-    public ReplyUtils verify(@RequestParam("key") String key, @RequestParam("code") String code) {
-        if (captchaService.verifyCaptcha(key, code)) {
-            return ReplyUtils.success();
-        } else {
-            return ReplyUtils.fail();
-        }
     }
     
 }
