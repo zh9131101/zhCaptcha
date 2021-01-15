@@ -219,16 +219,17 @@ public class CaptchaController {
     /**
      * 注入普通验证码
      */
-    @Autowired
-    @Qualifier("textImageCaptcha")
-    private AbstractCaptcha textImageCaptcha;
+    private final AbstractCaptcha textImageCaptcha;
 
     /**
      * 注入算术验证码
      */
-    @Autowired
-    @Qualifier("arithmeticCaptcha")
-    private AbstractCaptcha arithmeticCaptcha;
+    private final AbstractCaptcha arithmeticCaptcha;
+    
+    public CaptchaController(@Qualifier("arithmeticCaptcha") AbstractCaptcha arithmeticCaptcha, @Qualifier("textImageCaptcha") AbstractCaptcha textImageCaptcha) {
+        this.arithmeticCaptcha = arithmeticCaptcha;
+        this.textImageCaptcha = textImageCaptcha;
+    }
     
     /**
      * 普通验证码
