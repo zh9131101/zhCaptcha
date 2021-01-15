@@ -326,6 +326,8 @@ RendererUtils.rendererPng(outputStream, TextImageCaptchaFactory.getInstance().cr
 
 ## 7.前端html代码
 
+### 7.1.普通的使用
+
 ```html
 <img src="/captcha" width="130px" height="48px" />
 ```
@@ -333,6 +335,92 @@ RendererUtils.rendererPng(outputStream, TextImageCaptchaFactory.getInstance().cr
 > 注： `/captcha`路径排除登录拦截，比如shiro、spring security的拦截。
 
 
+### 7.2.toBase64的使用
+
+控制类代码
+```java
+@RestController
+@RequestMapping("captcha")
+public class CaptchaController {
+    private final AbstractCaptcha textImageCaptcha;
+
+    private final AbstractCaptcha arithmeticCaptcha;
+
+    private final ICaptchaService captchaService;
+
+    public CaptchaController(ICaptchaService captchaService, @Qualifier("textImageCaptcha") AbstractCaptcha textImageCaptcha, @Qualifier("arithmeticCaptcha") AbstractCaptcha arithmeticCaptcha) {
+        this.captchaService = captchaService;
+        this.textImageCaptcha = textImageCaptcha;
+        this.arithmeticCaptcha = arithmeticCaptcha;
+    }
+
+    /**
+     * 算术验证码
+     */
+    @GetMapping("arithmetic")
+    public ReplyUtils arithmeticCaptcha() {
+        // 设置验证码长度
+        arithmeticCaptcha.setLength(3);
+        // 设置字体样式：斜体……
+        arithmeticCaptcha.setFontStyle(Font.ITALIC);
+        return toBase64(arithmeticCaptcha, CaptchaConst.GIF, CaptchaConst.GIF_TYPE);
+    }
+
+    /**
+     * 普通验证码
+     */
+    @GetMapping
+    public ReplyUtils captcha() {
+        textImageCaptcha.setFontName("actionj.ttf");
+        textImageCaptcha.setFontStyle(Font.ITALIC);
+        return toBase64(textImageCaptcha, CaptchaConst.PNG, CaptchaConst.PNG_TYPE);
+    }
+
+    /**
+     * 图片转base64
+     *
+     * @param captcha 验证码
+     * @param formatType 图片格式
+     * @param type 编码头
+     * @return {@link ReplyUtils 统一响应}
+     */
+    private ReplyUtils toBase64(AbstractCaptcha captcha, String formatType, String type){
+        // 获取验证码
+        String captchaCode = captcha.generateCaptcha();
+        // 缓存的键
+        String uuid = RandomUtils.getUuid();
+        // 缓存验证码
+        captchaService.cacheCaptcha(uuid, captchaCode, 180);
+        // 创建字节流，用户存储验证码图片
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        // 自定义图片格式渲染
+        RendererUtils.renderer(formatType, byteArrayOutputStream, captcha);
+        // 图片转base64字符串
+        String base64 = CaptchaUtils.toBase64(byteArrayOutputStream, type);
+        // 保存到统一响应实体中
+        ReplyUtils replyUtils = ReplyUtils.success("验证码获取成功",base64);
+        replyUtils.put("key", uuid);
+        return replyUtils;
+    }
+
+    /**
+     * 校验验证码
+     *
+     * @param code 验证码
+     * @return ReplyUtils
+     */
+    @GetMapping("/verify")
+    public ReplyUtils verify(@RequestParam("key") String key, @RequestParam("code") String code) {
+        if (captchaService.verifyCaptcha(key, code)) {
+            return ReplyUtils.success();
+        } else {
+            return ReplyUtils.fail();
+        }
+    }
+    
+}
+
+```
 
 前端使用ajax获取验证码（redis存储验证码）：
 
@@ -346,7 +434,7 @@ RendererUtils.rendererPng(outputStream, TextImageCaptchaFactory.getInstance().cr
     // 获取验证码
     $.get('/captcha', function(res) {
         cacheKey = res.key;
-        $('#cimg').attr('src', res.image);
+        $('#cimg').attr('src', res.data);
     },'json');
     
     // 登录
