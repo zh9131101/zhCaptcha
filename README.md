@@ -105,35 +105,35 @@ public class CaptchaController {
     
     /* ------>>> 自定义类型使用 <<<------*/
     /**
-         * 验证码
-         *
-         * @param request HttpServletRequest
-         * @param response HttpServletResponse
-         * @throws IOException IOException
+     * 验证码
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @throws IOException IOException
+     */
+    @GetMapping
+    public void numArabicPng(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // 使用验证码工厂创建验证码
+        AbstractCaptcha captcha = TextImageCaptchaFactory.getInstance().createCaptcha();
+        // AbstractCaptcha captcha = ArithmeticCaptchaFactory.getInstance().createCaptcha();
+        /* 
+         * 自定义char[]验证码内容随机文本：
+         * 1、CaptchaConst.NUM_ARABIC：阿拉伯数字
+         * 2、CaptchaConst.EN_MIX：大小写字母混合
+         * 3、CaptchaConst.NUM_EN_MIX：通用的数字和英文字符，去掉容易混淆的0,o,1,i,l
+         * 4、CaptchaConst.NUM_EM_ALL：大小写字母 + 数字混合
+         * 5、CaptchaConst.CHINESE：常用中文
          */
-        @GetMapping
-        public void numArabicPng(HttpServletRequest request, HttpServletResponse response) throws IOException {
-            // 使用验证码工厂创建验证码
-            AbstractCaptcha captcha = TextImageCaptchaFactory.getInstance().createCaptcha();
-            // AbstractCaptcha captcha = ArithmeticCaptchaFactory.getInstance().createCaptcha();
-            /* 
-             * 自定义char[]验证码内容随机文本：
-             * 1、CaptchaConst.NUM_ARABIC：阿拉伯数字
-             * 2、CaptchaConst.EN_MIX：大小写字母混合
-             * 3、CaptchaConst.NUM_EN_MIX：通用的数字和英文字符，去掉容易混淆的0,o,1,i,l
-             * 4、CaptchaConst.NUM_EM_ALL：大小写字母 + 数字混合
-             * 5、CaptchaConst.CHINESE：常用中文
-             */
-            captcha.setRandomText(CaptchaConst.NUM_EN_MIX);
-            // 生成验证码（注：需在缓存与渲染验证码之前调用）
-            String captchaCode = captcha.generateCaptcha();
-            // 将验证码缓存，这里使用内置的session方式缓存（注：使用session方式缓存需在渲染验证码前，因为渲染方法内关闭了流，导致缓存错误）
-            CaptchaUtils.sesseionCache(captchaCode, request);
-            // 渲染验证码，rendererPngCaptcha渲染PNG格式，rendererGifCaptcha渲染GIF格式，RendererUtils.renderer自定义图片格式渲染
-            CaptchaUtils.rendererPngCaptcha(captcha, response); 
-            // CaptchaUtils.rendererGifCaptcha(captcha, response);
-            // RendererUtils.renderer(CaptchaConst.PNG, response.getOutputStream(), captcha); //Param1：图片后缀名
-        }
+        captcha.setRandomText(CaptchaConst.NUM_EN_MIX);
+        // 生成验证码（注：需在缓存与渲染验证码之前调用）
+        String captchaCode = captcha.generateCaptcha();
+        // 将验证码缓存，这里使用内置的session方式缓存（注：使用session方式缓存需在渲染验证码前，因为渲染方法内关闭了流，导致缓存错误）
+        CaptchaUtils.sesseionCache(captchaCode, request);
+        // 渲染验证码，rendererPngCaptcha渲染PNG格式，rendererGifCaptcha渲染GIF格式，RendererUtils.renderer自定义图片格式渲染
+        CaptchaUtils.rendererPngCaptcha(captcha, response); 
+        // CaptchaUtils.rendererGifCaptcha(captcha, response);
+        // RendererUtils.renderer(CaptchaConst.PNG, response.getOutputStream(), captcha); //Param1：图片后缀名
+    }
 }
 ```
 
