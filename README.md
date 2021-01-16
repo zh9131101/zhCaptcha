@@ -225,6 +225,7 @@ public class CaptchaController {
      */
     private final AbstractCaptcha arithmeticCaptcha;
     
+    @Autowired
     public CaptchaController(@Qualifier("arithmeticCaptcha") AbstractCaptcha arithmeticCaptcha, @Qualifier("textImageCaptcha") AbstractCaptcha textImageCaptcha) {
         this.arithmeticCaptcha = arithmeticCaptcha;
         this.textImageCaptcha = textImageCaptcha;
@@ -349,6 +350,7 @@ public class CaptchaController {
 
     private final ICaptchaService captchaService;
 
+    @Autowired
     public CaptchaController(ICaptchaService captchaService, @Qualifier("textImageCaptcha") AbstractCaptcha textImageCaptcha, @Qualifier("arithmeticCaptcha") AbstractCaptcha arithmeticCaptcha) {
         this.captchaService = captchaService;
         this.textImageCaptcha = textImageCaptcha;
